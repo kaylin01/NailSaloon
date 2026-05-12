@@ -1475,23 +1475,48 @@ a:focus-visible {
 @media (max-width: 768px) {
   .navbar__toggle { display: flex; }
 
+  /* Mobile: navbar bar is always solid — no transparent-over-hero effect */
+  .navbar,
+  .navbar:not(.navbar--scrolled) {
+    background-color: #ffffff;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: 0 1px 0 var(--border-soft);
+  }
+
   .navbar__nav {
     position: fixed;
     top: var(--nav-h); left: 0; right: 0; bottom: 0;
-    background: rgba(255, 255, 255, 0.98);
-    backdrop-filter: blur(16px);
+    background: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
     transform: translateX(100%);
     transition: transform var(--t-base);
     z-index: 999;
+    box-shadow: inset 0 1px 0 var(--border-soft);
   }
 
   .navbar__nav.is-open { transform: translateX(0); }
 
-  .navbar__list { flex-direction: column; gap: var(--sp-8); text-align: center; }
-  .nav-link { font-size: 1rem; }
+  .navbar__list {
+    flex-direction: column;
+    gap: var(--sp-6);
+    text-align: center;
+    width: 100%;
+    padding-inline: var(--pad);
+  }
+  .navbar__list > li { width: 100%; }
+  .nav-link {
+    font-size: 1rem;
+    display: inline-block;
+    padding-block: var(--sp-2);
+  }
+  .nav-link--cta {
+    display: inline-block;
+    margin-top: var(--sp-2);
+    padding: 0.85em 2.4em;
+  }
 
   .hero__br { display: block; }
   .hero__actions { flex-direction: column; align-items: stretch; width: min(280px, 100%); margin-inline: auto; }
