@@ -1,59 +1,72 @@
 /* ============================================================
-   Luxe Nails Studio — Scripts
+   Polish Me Pretty Gang — Scripts
+   Boutique nail studio · Morningside, Durban
+   Vanilla JS only · no dependencies · defensively guarded
    ============================================================ */
 
+/* Respect the user's motion preference throughout */
+var PREFERS_REDUCED_MOTION = window.matchMedia
+  ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  : false;
+
 /* ============================================================
-   TESTIMONIAL DATA
+   TESTIMONIAL DATA (home carousel + reviews page)
    ============================================================ */
-const TESTIMONIALS = [
+var TESTIMONIALS = [
   {
-    name:   'Amara Sithole',
-    role:   'Regular Client',
-    text:   '"Every visit feels like a quiet luxury escape. The work is precise, the studio is calm, and my gel sets last impeccably. I genuinely don\'t go anywhere else."',
+    name:   'Thandeka M.',
+    role:   'Acrylic Tips · Morningside',
+    text:   '"Best acrylics I\'ve had in Durban, hands down. My set lasted over four weeks without a single lift and the shape was exactly what I asked for. I\'m booked in every month now."',
     rating: 5,
-    avatar: 'https://i.pravatar.cc/120?img=47',
+    initials: 'TM',
   },
   {
-    name:   'Jessica Pretorius',
-    role:   'Loyal Client',
-    text:   '"I\'ve tried every salon in the northern suburbs. Luxe is on a different level — the cleanliness, the artistry, the unhurried pace. Worth every cent."',
+    name:   'Naledi K.',
+    role:   'Gel Overlays · Regular client',
+    text:   '"So clean, so professional, and the gel finish is glossy for weeks. I send everyone here. Booking on WhatsApp is quick and she always replies fast."',
     rating: 5,
-    avatar: 'https://i.pravatar.cc/120?img=12',
+    initials: 'NK',
   },
   {
-    name:   'Kehlani Dlamini',
-    role:   'Monthly Visitor',
-    text:   '"My acrylic full set lasted six weeks without lifting. The detail Zanele puts into every nail is unmatched, and she has the gentlest hands."',
+    name:   'Aisha P.',
+    role:   'Nail Art · Berea',
+    text:   '"I came in with a Pinterest screenshot and walked out with even better. The chrome and hand-painted art is next level. Worth every rand."',
     rating: 5,
-    avatar: 'https://i.pravatar.cc/120?img=32',
+    initials: 'AP',
   },
   {
-    name:   'Priya Naidoo',
-    role:   'Bridal Client',
-    text:   '"My wedding nails were the most photographed part of the day. Booked Luxe again three days after the honeymoon — I can\'t wear another set."',
+    name:   'Lerato S.',
+    role:   'Acrylic Fill · Loyal client',
+    text:   '"Hygiene is spotless and the space is so relaxing. My fills are always neat and on time. Polish Me Pretty Gang is my happy place."',
     rating: 5,
-    avatar: 'https://i.pravatar.cc/120?img=23',
+    initials: 'LS',
   },
   {
-    name:   'Chloe Reynolds',
-    role:   'Nail Art Enthusiast',
-    text:   '"I asked for hand-painted botanicals and got a gallery on my fingertips. The talent here is genuinely world-class."',
+    name:   'Zinhle D.',
+    role:   'Gel Tips · Umhlanga',
+    text:   '"Travelled in from Umhlanga and it was 100% worth the drive. Gorgeous gel tips, gentle hands, and honest pricing. Highly recommend."',
     rating: 5,
-    avatar: 'https://i.pravatar.cc/120?img=56',
+    initials: 'ZD',
+  },
+  {
+    name:   'Carmen V.',
+    role:   'Acrylic Toes · First visit',
+    text:   '"First time and definitely not my last. My toes have never looked this good and the chrome finish is stunning. Such a warm, welcoming vibe."',
+    rating: 5,
+    initials: 'CV',
   },
 ];
 
 /* ============================================================
-   NAVBAR — scroll, mobile toggle, opaque on sub-pages
+   NAVBAR — scroll state + mobile toggle
    ============================================================ */
 (function initNavbar() {
-  const navbar = document.querySelector('.navbar');
-  const toggle = document.querySelector('.navbar__toggle');
-  const nav    = document.querySelector('.navbar__nav');
-
+  var navbar = document.querySelector('.navbar');
+  var toggle = document.querySelector('.navbar__toggle');
+  var nav    = document.querySelector('.navbar__nav');
   if (!navbar) return;
 
-  const hasHero = !!document.querySelector('.hero');
+  var hasHero = !!document.querySelector('.hero');
   if (!hasHero) navbar.classList.add('navbar--scrolled');
 
   function onScroll() {
@@ -67,114 +80,75 @@ const TESTIMONIALS = [
   onScroll();
 
   if (toggle && nav) {
+    function closeMenu() {
+      nav.classList.remove('is-open');
+      toggle.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
     toggle.addEventListener('click', function () {
-      const isOpen = nav.classList.toggle('is-open');
+      var isOpen = nav.classList.toggle('is-open');
       toggle.classList.toggle('is-open', isOpen);
       toggle.setAttribute('aria-expanded', String(isOpen));
       document.body.style.overflow = isOpen ? 'hidden' : '';
     });
 
     nav.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', function () {
-        nav.classList.remove('is-open');
-        toggle.classList.remove('is-open');
-        toggle.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-      });
+      link.addEventListener('click', closeMenu);
+    });
+
+    // Close on Escape for keyboard users
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && nav.classList.contains('is-open')) closeMenu();
     });
   }
 })();
 
 /* ============================================================
-   SMOOTH SCROLL — for in-page anchor links
+   SMOOTH SCROLL — in-page anchor links
    ============================================================ */
 (function initSmoothScroll() {
   document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
     anchor.addEventListener('click', function (e) {
-      const href = anchor.getAttribute('href');
+      var href = anchor.getAttribute('href');
       if (!href || href === '#') return;
-      const target = document.querySelector(href);
+      var target = document.querySelector(href);
       if (!target) return;
       e.preventDefault();
-      const navH = parseInt(
-        getComputedStyle(document.documentElement).getPropertyValue('--nav-h'),
-        10
-      ) || 72;
-      const top = target.getBoundingClientRect().top + window.scrollY - navH;
-      window.scrollTo({ top: top, behavior: 'smooth' });
+      var navH = parseInt(
+        getComputedStyle(document.documentElement).getPropertyValue('--nav-h'), 10
+      ) || 76;
+      var top = target.getBoundingClientRect().top + window.scrollY - navH;
+      window.scrollTo({ top: top, behavior: PREFERS_REDUCED_MOTION ? 'auto' : 'smooth' });
     });
   });
 })();
 
 /* ============================================================
-   SERVICES EXPAND / COLLAPSE
-   ============================================================ */
-(function initServicesToggle() {
-  const toggle = document.getElementById('servicesToggle');
-  if (!toggle) return;
-
-  const grid    = document.querySelector('.services__grid');
-  const extras  = document.querySelectorAll('.svc-card--extra');
-  const textEl  = toggle.querySelector('.services__toggle-text');
-  if (!grid || !extras.length) return;
-
-  let expanded = false;
-  let busy = false;
-
-  toggle.addEventListener('click', function () {
-    if (busy) return;
-    busy = true;
-    expanded = !expanded;
-    toggle.setAttribute('aria-expanded', String(expanded));
-    if (textEl) textEl.textContent = expanded ? 'Show Less' : 'Show More Services';
-
-    if (expanded) {
-      extras.forEach(function (card) { card.classList.add('is-active'); });
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
-          extras.forEach(function (card, i) {
-            setTimeout(function () { card.classList.add('is-visible'); }, i * 90);
-          });
-          setTimeout(function () { busy = false; }, 600 + extras.length * 90);
-        });
-      });
-    } else {
-      extras.forEach(function (card, i) {
-        setTimeout(function () { card.classList.remove('is-visible'); }, (extras.length - 1 - i) * 60);
-      });
-      setTimeout(function () {
-        extras.forEach(function (card) { card.classList.remove('is-active'); });
-        busy = false;
-      }, 600);
-    }
-  });
-})();
-
-/* ============================================================
-   TESTIMONIAL CAROUSEL — translateX based
+   TESTIMONIAL CAROUSEL (home)
    ============================================================ */
 (function initCarousel() {
-  const inner      = document.querySelector('.carousel__inner');
-  const prevCard   = document.getElementById('tCardPrev');
-  const centerCard = document.getElementById('tCardCenter');
-  const nextCard   = document.getElementById('tCardNext');
-  const btnPrev    = document.getElementById('carouselPrev');
-  const btnNext    = document.getElementById('carouselNext');
-  const dotsWrap   = document.getElementById('carouselDots');
-
+  var inner      = document.querySelector('.carousel__inner');
+  var prevCard   = document.getElementById('tCardPrev');
+  var centerCard = document.getElementById('tCardCenter');
+  var nextCard   = document.getElementById('tCardNext');
+  var btnPrev    = document.getElementById('carouselPrev');
+  var btnNext    = document.getElementById('carouselNext');
+  var dotsWrap   = document.getElementById('carouselDots');
   if (!inner || !centerCard) return;
 
-  const n = TESTIMONIALS.length;
-  let current = 0;
-  let autoPlay;
-  let isAnimating = false;
-  let touchStartX = 0;
-  let touchDeltaX = 0;
+  var n = TESTIMONIALS.length;
+  var current = 0;
+  var autoPlay;
+  var isAnimating = false;
+  var touchStartX = 0;
+  var touchDeltaX = 0;
 
-  const dots = [];
+  var dots = [];
   if (dotsWrap) {
     TESTIMONIALS.forEach(function (_, i) {
-      const dot = document.createElement('button');
+      var dot = document.createElement('button');
       dot.className = 'carousel-dot';
       dot.type = 'button';
       dot.setAttribute('aria-label', 'Go to testimonial ' + (i + 1));
@@ -187,21 +161,21 @@ const TESTIMONIALS = [
 
   function populateCard(el, data) {
     if (!el || !data) return;
-    const stars  = el.querySelector('.t-card__stars');
-    const text   = el.querySelector('.t-card__text');
-    const name   = el.querySelector('.t-card__name');
-    const role   = el.querySelector('.t-card__role');
-    const avatar = el.querySelector('.t-card__avatar');
-    if (stars)  stars.textContent  = '★'.repeat(data.rating);
-    if (text)   text.textContent   = data.text;
-    if (name)   name.textContent   = data.name;
-    if (role)   role.textContent   = data.role;
-    if (avatar) { avatar.src = data.avatar; avatar.alt = data.name; }
+    var stars  = el.querySelector('.t-card__stars');
+    var text   = el.querySelector('.t-card__text');
+    var name   = el.querySelector('.t-card__name');
+    var role   = el.querySelector('.t-card__role');
+    var avatar = el.querySelector('.t-card__avatar');
+    if (stars)  { stars.textContent = '★'.repeat(data.rating); stars.setAttribute('aria-label', data.rating + ' out of 5 stars'); }
+    if (text)   text.textContent = data.text;
+    if (name)   name.textContent = data.name;
+    if (role)   role.textContent = data.role;
+    if (avatar) avatar.textContent = data.initials || '';
   }
 
   function render() {
-    const prevIdx = (current - 1 + n) % n;
-    const nextIdx = (current + 1) % n;
+    var prevIdx = (current - 1 + n) % n;
+    var nextIdx = (current + 1) % n;
     populateCard(prevCard,   TESTIMONIALS[prevIdx]);
     populateCard(centerCard, TESTIMONIALS[current]);
     populateCard(nextCard,   TESTIMONIALS[nextIdx]);
@@ -215,20 +189,19 @@ const TESTIMONIALS = [
     if (isAnimating) return;
     isAnimating = true;
 
-    const exitClass = dir === 'next' ? 'is-exiting-left' : 'is-exiting-right';
-    const enterTx   = dir === 'next' ? '56px' : '-56px';
+    var exitClass = dir === 'next' ? 'is-exiting-left' : 'is-exiting-right';
+    var enterTx   = dir === 'next' ? '56px' : '-56px';
 
-    inner.classList.add(exitClass);
+    var delay = PREFERS_REDUCED_MOTION ? 0 : 380;
+    if (!PREFERS_REDUCED_MOTION) inner.classList.add(exitClass);
 
     setTimeout(function () {
-      if (typeof targetIndex === 'number') {
-        current = targetIndex;
-      } else if (dir === 'next') {
-        current = (current + 1) % n;
-      } else {
-        current = (current - 1 + n) % n;
-      }
+      if (typeof targetIndex === 'number') current = targetIndex;
+      else if (dir === 'next') current = (current + 1) % n;
+      else current = (current - 1 + n) % n;
       render();
+
+      if (PREFERS_REDUCED_MOTION) { isAnimating = false; return; }
 
       inner.classList.remove(exitClass);
       inner.style.transition = 'none';
@@ -243,11 +216,10 @@ const TESTIMONIALS = [
           setTimeout(function () { isAnimating = false; }, 500);
         });
       });
-    }, 380);
+    }, delay);
   }
 
   function navigate(dir) { animateNav(dir); }
-
   function goTo(index) {
     if (index === current || isAnimating) return;
     animateNav(index > current ? 'next' : 'prev', index);
@@ -258,15 +230,12 @@ const TESTIMONIALS = [
   if (btnNext) btnNext.addEventListener('click', function () { navigate('next'); resetAutoPlay(); });
 
   function startAutoPlay() {
+    if (PREFERS_REDUCED_MOTION) return;
     autoPlay = setInterval(function () { navigate('next'); }, 6500);
   }
+  function resetAutoPlay() { clearInterval(autoPlay); startAutoPlay(); }
 
-  function resetAutoPlay() {
-    clearInterval(autoPlay);
-    startAutoPlay();
-  }
-
-  const carouselEl = document.querySelector('.carousel');
+  var carouselEl = document.querySelector('.carousel');
   if (carouselEl) {
     carouselEl.addEventListener('mouseenter', function () { clearInterval(autoPlay); });
     carouselEl.addEventListener('focusin',    function () { clearInterval(autoPlay); });
@@ -279,15 +248,11 @@ const TESTIMONIALS = [
     touchDeltaX = 0;
     clearInterval(autoPlay);
   }, { passive: true });
-
   inner.addEventListener('touchmove', function (e) {
     touchDeltaX = e.changedTouches[0].clientX - touchStartX;
   }, { passive: true });
-
   inner.addEventListener('touchend', function () {
-    if (Math.abs(touchDeltaX) > 40) {
-      navigate(touchDeltaX < 0 ? 'next' : 'prev');
-    }
+    if (Math.abs(touchDeltaX) > 40) navigate(touchDeltaX < 0 ? 'next' : 'prev');
     startAutoPlay();
   });
 
@@ -296,37 +261,197 @@ const TESTIMONIALS = [
 })();
 
 /* ============================================================
+   GALLERY — category filtering
+   ============================================================ */
+(function initGalleryFilter() {
+  var filters = document.querySelectorAll('.gallery__filter');
+  var items   = document.querySelectorAll('.gallery__item');
+  if (!filters.length || !items.length) return;
+
+  filters.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var cat = btn.getAttribute('data-filter');
+
+      filters.forEach(function (f) {
+        var active = f === btn;
+        f.classList.toggle('is-active', active);
+        f.setAttribute('aria-pressed', String(active));
+      });
+
+      items.forEach(function (item) {
+        var match = cat === 'all' || item.getAttribute('data-category') === cat;
+        item.classList.toggle('is-hidden', !match);
+      });
+    });
+  });
+})();
+
+/* ============================================================
+   GALLERY — accessible lightbox
+   ============================================================ */
+(function initLightbox() {
+  var lightbox = document.getElementById('lightbox');
+  var triggers = document.querySelectorAll('.gallery__item[data-full]');
+  if (!lightbox || !triggers.length) return;
+
+  var imgEl     = lightbox.querySelector('.lightbox__img');
+  var captionEl = lightbox.querySelector('.lightbox__caption');
+  var btnClose  = lightbox.querySelector('.lightbox__close');
+  var btnPrev   = lightbox.querySelector('.lightbox__nav--prev');
+  var btnNext   = lightbox.querySelector('.lightbox__nav--next');
+
+  var visible = [];      // currently-shown triggers (respects active filter)
+  var index = 0;
+  var lastFocused = null;
+
+  function currentList() {
+    return Array.prototype.filter.call(triggers, function (t) {
+      return !t.classList.contains('is-hidden');
+    });
+  }
+
+  function show(i) {
+    visible = currentList();
+    if (!visible.length) return;
+    index = (i + visible.length) % visible.length;
+    var t = visible[index];
+    var full = t.getAttribute('data-full');
+    var cap  = t.getAttribute('data-caption') || '';
+    var imgInside = t.querySelector('img');
+    imgEl.src = full;
+    imgEl.alt = imgInside ? imgInside.alt : cap;
+    captionEl.textContent = cap;
+  }
+
+  function open(t) {
+    lastFocused = document.activeElement;
+    visible = currentList();
+    index = visible.indexOf(t);
+    if (index < 0) index = 0;
+    show(index);
+    lightbox.classList.add('is-open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    btnClose.focus();
+  }
+
+  function close() {
+    lightbox.classList.remove('is-open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (lastFocused) lastFocused.focus();
+  }
+
+  triggers.forEach(function (t) {
+    t.addEventListener('click', function () { open(t); });
+  });
+
+  if (btnClose) btnClose.addEventListener('click', close);
+  if (btnPrev)  btnPrev.addEventListener('click', function () { show(index - 1); });
+  if (btnNext)  btnNext.addEventListener('click', function () { show(index + 1); });
+
+  lightbox.addEventListener('click', function (e) {
+    if (e.target === lightbox) close();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (!lightbox.classList.contains('is-open')) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowLeft') show(index - 1);
+    else if (e.key === 'ArrowRight') show(index + 1);
+    else if (e.key === 'Tab') {
+      // simple focus trap among the lightbox controls
+      var focusables = [btnClose, btnPrev, btnNext].filter(Boolean);
+      var first = focusables[0];
+      var last  = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+})();
+
+/* ============================================================
+   FAQ — accessible accordion
+   ============================================================ */
+(function initFaq() {
+  var items = document.querySelectorAll('.faq-item');
+  if (!items.length) return;
+
+  items.forEach(function (item) {
+    var btn = item.querySelector('.faq-item__q');
+    var ans = item.querySelector('.faq-item__a');
+    if (!btn || !ans) return;
+
+    btn.addEventListener('click', function () {
+      var isOpen = item.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', String(isOpen));
+      ans.style.maxHeight = isOpen ? ans.scrollHeight + 'px' : '0px';
+    });
+  });
+
+  // Recalculate open panel heights on resize
+  window.addEventListener('resize', function () {
+    document.querySelectorAll('.faq-item.is-open .faq-item__a').forEach(function (ans) {
+      ans.style.maxHeight = ans.scrollHeight + 'px';
+    });
+  });
+})();
+
+/* ============================================================
+   CONTACT — highlight today's opening hours
+   ============================================================ */
+(function initOpeningHours() {
+  var rows = document.querySelectorAll('.hours-row[data-day]');
+  if (!rows.length) return;
+  var today = new Date().getDay(); // 0 = Sun ... 6 = Sat
+  rows.forEach(function (row) {
+    if (parseInt(row.getAttribute('data-day'), 10) === today) {
+      row.classList.add('is-today');
+      var day = row.querySelector('.hours-row__day');
+      if (day && !row.querySelector('.hours-row__badge')) {
+        var badge = document.createElement('span');
+        badge.className = 'hours-row__badge';
+        badge.textContent = 'Today';
+        day.appendChild(badge);
+      }
+    }
+  });
+})();
+
+/* ============================================================
    SCROLL REVEAL
    ============================================================ */
 (function initScrollReveal() {
-  const items = document.querySelectorAll('.reveal');
+  var items = document.querySelectorAll('.reveal');
   if (!items.length) return;
 
+  if (PREFERS_REDUCED_MOTION || !('IntersectionObserver' in window)) {
+    items.forEach(function (el) { el.classList.add('is-visible'); });
+    return;
+  }
+
   document.querySelectorAll(
-    '.services__grid > .reveal, .gallery__grid > *, .why__grid > *'
+    '.featured__grid > .reveal, .gallery__grid > *, .why__grid > *, .why-cards__grid > *, .reviews__grid > *, .process__grid > *'
   ).forEach(function (el, i) {
     el.style.transitionDelay = (i * 70) + 'ms';
   });
 
-  const observer = new IntersectionObserver(
-    function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.12 }
-  );
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
 
   items.forEach(function (el) { observer.observe(el); });
 })();
 
 /* ============================================================
-   YEAR INJECTION (footer)
+   FOOTER YEAR
    ============================================================ */
 (function initYear() {
-  const el = document.getElementById('footerYear');
+  var el = document.getElementById('footerYear');
   if (el) el.textContent = new Date().getFullYear();
 })();

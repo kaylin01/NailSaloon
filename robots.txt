@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://polishmeprettygang.co.za/sitemap.xml
