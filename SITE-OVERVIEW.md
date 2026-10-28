@@ -18,7 +18,7 @@
 |------|---------|
 | `index.html` | Home: hero, intro, why-choose-us (4 cards), featured services, 4-step process, testimonials carousel, Instagram CTA, booking CTA |
 | `pricing.html` | Full price list — Acrylic / Gel / Extras cards with per-item booking CTAs |
-| `gallery.html` | Filterable portfolio (All / Acrylic / Gel / Nail Art / Toes) + accessible lightbox |
+| `gallery.html` | Filterable portfolio (All / Acrylic / Gel / Nail Art) + accessible lightbox |
 | `reviews.html` | Aggregate rating, 6 review cards, before/after transformations, CTA |
 | `about.html` | Story, 6 "why us" reasons, philosophy quote, CTA |
 | `contact.html` | Contact info cards, opening hours (today highlighted), map placeholder, FAQ accordion |
@@ -35,7 +35,7 @@
 - **Phone / WhatsApp:** 068 568 9449 · `tel:+27685689449` · `https://wa.me/27685689449`
 - **Hours:** Mon–Fri 09:00–18:00 · Sat 08:30–16:00 · Sun closed
 - **Domain (placeholder):** `https://polishmeprettygang.co.za` — replace before launch.
-- **Social (placeholder handles):** instagram.com/polishmeprettygang, tiktok.com/@polishmeprettygang
+- **Social:** instagram.com/polishmeprettygang_durban, tiktok.com/@polish.me.pretty.gang26
 
 ## 4. Conversion (every page drives to WhatsApp)
 
