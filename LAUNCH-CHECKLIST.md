@@ -54,8 +54,6 @@ Search-and-replace these across all files:
 | Placeholder | Replace with |
 |---|---|
 | `https://polishmeprettygang.co.za` | the real domain (canonical, OG, sitemap, robots, JSON-LD) |
-| `instagram.com/polishmeprettygang` | the real Instagram handle |
-| `tiktok.com/@polishmeprettygang` | the real TikTok handle (or remove the link) |
 | Postal code `4001` | confirm the correct code |
 | `geo` lat/long `-29.8230, 31.0120` | exact coordinates (right-click the pin in Google Maps → copy) |
 | Opening hours (Mon–Fri 9–18, Sat 8:30–16, Sun closed) | confirm real hours — update `contact.html`, footers, CTAs **and** the JSON-LD on `index.html` |
