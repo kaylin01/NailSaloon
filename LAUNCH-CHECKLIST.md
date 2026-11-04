@@ -56,7 +56,7 @@ Search-and-replace these across all files:
 | `https://polishmeprettygang.co.za` | the real domain (canonical, OG, sitemap, robots, JSON-LD) |
 | Postal code `4001` | confirm the correct code |
 | `geo` lat/long `-29.8230, 31.0120` | exact coordinates (right-click the pin in Google Maps → copy) |
-| Opening hours (Mon–Fri 9–18, Sat 8:30–16, Sun closed) | confirm real hours — update `contact.html`, footers, CTAs **and** the JSON-LD on `index.html` |
+| ~~Opening hours~~ | **Confirmed with client:** Mon–Fri 08:00–17:00, Sat 08:00–16:00, Sun closed. Already applied to `contact.html`, footers, CTAs and the JSON-LD on `index.html`. |
 | `aggregateRating` 5.0 / 48 reviews | use real numbers, or remove the `aggregateRating`/`review` blocks if you can't substantiate them (Google requires genuine reviews) |
 
 **Phone & WhatsApp are already correct:** `068 568 9449` / `wa.me/27685689449`.
@@ -78,7 +78,9 @@ Search-and-replace these across all files:
 
 ## 5. Replace stock photos with real work
 
-Gallery, hero, about and before/after currently use Unsplash stock for layout.
+Gallery, hero and about currently use Unsplash stock for layout. (The before/after
+section on `reviews.html` is commented out until the client sends real pairs — see
+section 7 below.)
 Swap in real salon photos (square, ~600 px for thumbnails, ~1100 px for lightbox):
 
 - Save to `assets/` and update `src` / `data-full` attributes.
@@ -96,3 +98,22 @@ Swap in real salon photos (square, ~600 px for thumbnails, ~1100 px for lightbox
 - [ ] Submit `sitemap.xml` in Google Search Console.
 - [ ] Create / claim the **Google Business Profile** (huge for local "nails near me" searches).
 - [ ] Confirm every WhatsApp button opens a chat to `068 568 9449`.
+
+---
+
+## 7. Still unverified — confirm with the client before launch
+
+These were toned down or hidden because we could not substantiate them. Each can be
+put back in full once the client confirms it.
+
+| Item | Where | Status |
+|---|---|---|
+| Before / after transformations | `reviews.html` | Section commented out, markup kept. Restore once real photo pairs arrive. |
+| "Qualified / trained nail technician" | `index.html`, `about.html` | Reworded to "Meticulous finish" — experience, not credentials. Restore if the client holds a recognised qualification. |
+| "Tools sterilised between every client, single-use files" | `index.html`, `about.html` | Reworded to "Careful prep". Restore if the client confirms the actual protocol — it is a strong selling point. |
+| "You're the only client in the room" | `about.html` | Reworded to an unhurried, by-appointment studio. |
+| Payment — EFT | `contact.html` FAQ + JSON-LD, `index.html` JSON-LD | Now reads cash and card (card machine on the premises). Add EFT back if they do accept it. |
+| Nail wear "4 weeks" | `about.html` stat | Now "3–4 Week Wear". |
+| `aggregateRating` 5.0 / 48 reviews + the named testimonials | `index.html`, `reviews.html`, `script.js` | **Not yet addressed.** Google requires genuine, collectable reviews for this markup. Either get the client's real review count or remove the `aggregateRating` and `review` blocks. |
+| "1000+ sets crafted" stat | `about.html` | **Not yet addressed.** Confirm or replace. |
+| Postal code, geo coordinates, "easy street parking" | `contact.html`, `index.html` | **Not yet addressed.** Confirm with the client. |

@@ -2132,20 +2132,10 @@ address { font-style: normal; }
   50%      { box-shadow: 0 10px 28px rgba(37, 211, 102, 0.4), 0 0 0 14px rgba(37, 211, 102, 0); }
 }
 
-/* Sticky mobile booking bar */
-.mobile-cta {
-  display: none;
-  position: fixed;
-  left: 0; right: 0; bottom: 0;
-  z-index: 940;
-  background: rgba(255, 255, 255, 0.97);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-top: 1px solid var(--border);
-  padding: var(--sp-3) var(--sp-4);
-  box-shadow: 0 -4px 20px rgba(42, 37, 35, 0.08);
-}
-.mobile-cta .btn { width: 100%; }
+/* Sticky mobile booking bar — REMOVED for launch.
+   The floating WhatsApp button (.whatsapp-float) is the only mobile
+   booking shortcut now. Restore this block and the .mobile-cta markup
+   in each page's footer if the bar is ever wanted back. */
 
 /* ============================================================
    29. RESPONSIVE — LARGE DESKTOP
@@ -2291,9 +2281,8 @@ address { font-style: normal; }
   .footer__brand { grid-column: span 2; }
   .footer__bottom-inner { flex-direction: column; text-align: center; }
 
-  /* Sticky mobile CTA + lift float above it */
-  .mobile-cta { display: block; }
-  .whatsapp-float { bottom: 78px; right: 18px; width: 52px; height: 52px; }
+  /* Floating WhatsApp button sits at the bottom edge on mobile */
+  .whatsapp-float { bottom: 18px; right: 18px; width: 52px; height: 52px; }
   .whatsapp-float svg { width: 25px; height: 25px; }
   .whatsapp-float__tooltip { display: none; }
   body { padding-bottom: 0; }
@@ -2340,7 +2329,7 @@ address { font-style: normal; }
    33. PRINT (pricing-friendly)
    ============================================================ */
 @media print {
-  .navbar, .whatsapp-float, .mobile-cta, .footer, .cta-section,
+  .navbar, .whatsapp-float, .footer, .cta-section,
   .hero__scroll, .gallery__filters { display: none !important; }
   body { color: #000; }
   .page-hero { padding-top: var(--sp-8); }
